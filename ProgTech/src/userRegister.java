@@ -1,14 +1,15 @@
 import javax.swing.*;
 import java.awt.event.*;
 
-public class userLogin extends JDialog {
+public class userRegister extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
     private JPasswordField passwordField1;
+    private JPasswordField passwordField2;
     private JTextField textField1;
 
-    public userLogin() {
+    public userRegister() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -52,7 +53,7 @@ public class userLogin extends JDialog {
     }
 
     public static void main(String[] args) {
-        userLogin dialog = new userLogin();
+        userRegister dialog = new userRegister();
         dialog.pack();
         dialog.setVisible(true);
         System.exit(0);
