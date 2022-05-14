@@ -5,10 +5,17 @@ import java.util.HashMap;
 
 public class DB implements IDatabaseDriver{
 
+    protected static DB instance;
+
     IDatabaseDriver driver;
+
+    public static DB getInstance() {
+        return instance;
+    }
 
     public DB(IDatabaseDriver driver) {
         this.driver = driver;
+        instance = this;
     }
 
     @Override
