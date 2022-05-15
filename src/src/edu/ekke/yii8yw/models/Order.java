@@ -2,6 +2,7 @@ package edu.ekke.yii8yw.models;
 
 import edu.ekke.yii8yw.core.database.DB;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -95,7 +96,7 @@ public class Order extends Model{
             this.setStreet((String) map.get("street"));
             this.setHouseNumber((int) map.get("house_number"));
             this.setPhone((String) map.get("phone"));
-            this.setCreatedAt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse((String)map.get("created_at")));
+            this.setCreatedAt((Timestamp) map.get("created_at"));
         }
         catch (Exception e){
             return false;
@@ -112,7 +113,7 @@ public class Order extends Model{
         result.put("street", this.getStreet());
         result.put("house_number", this.getHouseNumber());
         result.put("phone", this.getPhone());
-        result.put("created_at", this.getCreatedAt().toString());
+        result.put("created_at", this.getCreatedAt());
 
         return result;
     }

@@ -2,6 +2,7 @@ package edu.ekke.yii8yw.models;
 
 import edu.ekke.yii8yw.core.database.DB;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,7 +94,7 @@ public class User extends Model{
             this.setEmail((String) map.get("email"));
             this.setPassword((String) map.get("password"));
             this.setIsAdmin((map.get("is_admin")) == "1");
-            this.setCreatedAt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse((String)map.get("created_at")));
+            this.setCreatedAt((Timestamp) map.get("created_at"));
 
         }catch (Exception e){
             return false;
@@ -111,7 +112,7 @@ public class User extends Model{
         result.put("email", this.getEmail());
         result.put("password", this.getPassword());
         result.put("is_admin", this.getIsAdmin() ? 1 : 0);
-        result.put("created_at", this.getCreatedAt().toString());
+        result.put("created_at", this.getCreatedAt());
 
         return result;
     }

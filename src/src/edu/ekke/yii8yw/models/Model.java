@@ -1,5 +1,6 @@
 package edu.ekke.yii8yw.models;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -9,17 +10,17 @@ public abstract class Model {
         this.id = id;
     }
 
-    protected void setCreatedAt(Date createdAt) {
+    protected void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
     }
 
     protected long id = 0;
-    protected Date createdAt;
+    protected Timestamp createdAt;
 
     public long getId() {
         return id;
     }
-    public Date getCreatedAt() {
+    public Timestamp getCreatedAt() {
         return createdAt;
     }
 

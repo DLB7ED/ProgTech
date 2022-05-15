@@ -13,9 +13,12 @@ public class DB implements IDatabaseDriver{
         return instance;
     }
 
-    public DB(IDatabaseDriver driver) {
+    protected DB(IDatabaseDriver driver) {
         this.driver = driver;
-        instance = this;
+    }
+
+    public static void init(IDatabaseDriver driver){
+        instance = new DB(driver);
     }
 
     @Override

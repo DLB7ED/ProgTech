@@ -2,6 +2,7 @@ package edu.ekke.yii8yw.models;
 
 import edu.ekke.yii8yw.core.database.DB;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -138,7 +139,7 @@ public class Product extends Model{
             this.setStorageType((String) map.get("storage_type"));
             this.setStorage((int) map.get("storage"));
             this.setPrice((int) map.get("price"));
-            this.setCreatedAt(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse((String)map.get("created_at")));
+            this.setCreatedAt((Timestamp) map.get("created_at"));
         }
         catch (Exception e){
             return false;
@@ -159,7 +160,7 @@ public class Product extends Model{
         result.put("storage_type", this.getStorageType());
         result.put("storage", this.getStorage());
         result.put("price", this.getPrice());
-        result.put("created_at", this.getCreatedAt().toString());
+        result.put("created_at", this.getCreatedAt());
 
         return result;
     }
