@@ -36,7 +36,7 @@ public class MySqlDriver implements IDatabaseDriver{
         try {
             PreparedStatement stmt = this.activeConnection.prepareStatement(query);
             for (int i = 0; i < args.size(); i++) {
-                stmt.setObject(i, args.get(i));
+                stmt.setObject(i+1, args.get(i));
             }
             ResultSet rs =  stmt.executeQuery();
 
@@ -69,7 +69,7 @@ public class MySqlDriver implements IDatabaseDriver{
         try {
             PreparedStatement stmt = this.activeConnection.prepareStatement(query);
             for (int i = 0; i < args.size(); i++) {
-                stmt.setObject(i, args.get(i));
+                stmt.setObject(i+1, args.get(i));
             }
 
             result = stmt.executeUpdate();
