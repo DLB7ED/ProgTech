@@ -165,4 +165,9 @@ public class Product extends Model{
 
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "%s %s (%d Ft)".formatted(this.producer, this.series, this.price);
+    }
 }
