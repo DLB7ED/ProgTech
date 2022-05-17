@@ -1,5 +1,7 @@
 package edu.ekke.yii8yw.core.database;
 
+import edu.ekke.yii8yw.models.Product;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -34,5 +36,9 @@ public class DB implements IDatabaseDriver{
     @Override
     public int execute(String query, ArrayList<Object> args) {
         return this.driver.execute(query, args);
+    }
+
+    public ResultTable findAll(String resource) {
+        return this.findAll("select * from %s".formatted(resource), new ArrayList<>());
     }
 }
