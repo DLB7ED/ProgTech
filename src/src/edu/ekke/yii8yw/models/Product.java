@@ -131,6 +131,7 @@ public class Product extends Model{
     @Override
     public boolean fromHash(HashMap<String, Object> map) {
         try {
+            this.setId((long) map.get("id"));
             this.setProducer((String) map.get("producer"));
             this.setSeries((String) map.get("series"));
             this.setDisplay((double) map.get("display"));
