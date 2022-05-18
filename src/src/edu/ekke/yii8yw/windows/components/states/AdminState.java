@@ -6,22 +6,27 @@ import edu.ekke.yii8yw.helpers.Tools;
 import java.awt.event.ActionEvent;
 
 public class AdminState implements IListWindowState{
-    private final ListWindowState parent;
+    private final ListWindowStateManager manager;
 
-    public AdminState(ListWindowState parent) {
-        this.parent = parent;
+    public AdminState(ListWindowStateManager parent) {
+        this.manager = parent;
     }
 
     @Override
     public void handleLeftButtonClick(ActionEvent event) {
-        long productId = this.parent.getSelectedProduct().getId();
+        long productId = this.manager.getSelectedProduct().getId();
         DB.getInstance().execute("delete from products where id=?", Tools.asList(productId));
-        this.parent.getListWindow().populateList();
+        this.manager.getMainWindow().populateList();
+        this.manager.changeState(new UserState(this.manager));
+        this.manager.getMainWindow().clearInputs();
     }
 
     @Override
     public void handleRightButtonClick(ActionEvent event) {
-
+        this.manager.getSelectedProduct().save();
+        this.manager.getMainWindow().populateList();
+        this.manager.changeState(new UserState(this.manager));
+        this.manager.getMainWindow().clearInputs();
     }
 
     @Override

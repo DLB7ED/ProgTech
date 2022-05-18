@@ -4,10 +4,10 @@ import java.awt.event.ActionEvent;
 
 public class UserState implements IListWindowState{
 
-    private final ListWindowState parent;
+    private final ListWindowStateManager manager;
 
-    public UserState(ListWindowState parent) {
-        this.parent = parent;
+    public UserState(ListWindowStateManager manager) {
+        this.manager = manager;
     }
     @Override
     public void handleLeftButtonClick(ActionEvent event) {
@@ -16,7 +16,7 @@ public class UserState implements IListWindowState{
 
     @Override
     public void handleRightButtonClick(ActionEvent event) {
-        parent.changeState(new AdminState(parent));
+        manager.changeState(new AdminState(manager));
     }
 
     @Override

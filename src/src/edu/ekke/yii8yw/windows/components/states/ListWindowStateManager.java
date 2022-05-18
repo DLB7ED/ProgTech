@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.util.List;
 
-public class ListWindowState implements IListWindowState{
+public class ListWindowStateManager implements IListWindowState{
     private final JButton leftButton;
     private final JButton rightButton;
     private final List<JTextField> inputs;
@@ -15,7 +15,7 @@ public class ListWindowState implements IListWindowState{
     private Product selectedProduct;
     private final ListProductWindow listWindow;
 
-    public ListWindowState(ListProductWindow parent, List<JButton> buttons, List<JTextField> inputs) {
+    public ListWindowStateManager(ListProductWindow parent, List<JButton> buttons, List<JTextField> inputs) {
         this.listWindow = parent;
         this.leftButton = buttons.get(0);
         this.rightButton = buttons.get(1);
@@ -26,7 +26,7 @@ public class ListWindowState implements IListWindowState{
     }
 
 
-    public ListProductWindow getListWindow() {
+    public ListProductWindow getMainWindow() {
         return listWindow;
     }
 
@@ -69,7 +69,7 @@ public class ListWindowState implements IListWindowState{
         this.rightButton.setText(rightButtonText());
 
         for (var input : inputs) {
-            input.setEnabled(canEdit());
+            input.setEditable(canEdit());
         }
     }
 }
