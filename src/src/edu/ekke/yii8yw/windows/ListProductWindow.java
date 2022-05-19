@@ -44,6 +44,8 @@ public class ListProductWindow extends JFrame{
 
         list1.addListSelectionListener(e -> handleSelection());
 
+        logInButton.addActionListener(e -> new UserLogin());
+        registerButton.addActionListener(e -> new UserRegister());
         refreshButton.addActionListener((event) -> populateList());
 
         addButton.addActionListener((event) -> {
