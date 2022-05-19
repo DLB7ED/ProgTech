@@ -1,6 +1,7 @@
 package edu.ekke.yii8yw.models;
 
 import edu.ekke.yii8yw.core.database.DB;
+import edu.ekke.yii8yw.helpers.Tools;
 import org.apache.log4j.Logger;
 
 import java.sql.Timestamp;
@@ -75,13 +76,16 @@ public class User extends Model{
 
     @Override
     public boolean load(long id) {
+       return this.loadLogic(DB.getInstance().findOne("select * from users where id=?", Tools.asList(id)));
+    }
+
+    public boolean load(String email){
+        return this.loadLogic(DB.getInstance().findOne("select * from users where email=?", Tools.asList(email)));
+    }
+
+    private boolean loadLogic(HashMap<String, Object> hashMap) {
         try {
-            ArrayList<Object> params = new ArrayList<>();
-            params.add(id);
-
-            HashMap<String, Object> value = DB.getInstance().findOne("select * from users where id=?", params);
-
-            this.fromHash(value);
+            this.fromHash(hashMap);
 
             Logger.getLogger(User.class).info("Loaded user with id: %d".formatted(getId()));
             return true;
@@ -99,7 +103,7 @@ public class User extends Model{
             this.setName((String) map.get("name"));
             this.setEmail((String) map.get("email"));
             this.setPassword((String) map.get("password"));
-            this.setIsAdmin((map.get("is_admin")) == "1");
+            this.setIsAdmin(((int)map.get("is_admin")) == 1);
             this.setCreatedAt((Timestamp) map.get("created_at"));
 
         }catch (Exception e){
