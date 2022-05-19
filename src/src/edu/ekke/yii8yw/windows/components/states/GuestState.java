@@ -1,17 +1,17 @@
 package edu.ekke.yii8yw.windows.components.states;
 
-import edu.ekke.yii8yw.core.Auth;
+import edu.ekke.yii8yw.windows.UserLogin;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-public class UserState implements IListWindowState{
+public class GuestState implements IListWindowState {
 
     private final ListWindowStateManager manager;
 
-    public UserState(ListWindowStateManager manager) {
+    public GuestState(ListWindowStateManager manager) {
         this.manager = manager;
     }
+
     @Override
     public void handleLeftButtonClick(ActionEvent event) {
 
@@ -19,20 +19,12 @@ public class UserState implements IListWindowState{
 
     @Override
     public void handleRightButtonClick(ActionEvent event) {
-        if(!Auth.isAdmin()) {
-            JOptionPane.showMessageDialog(this.manager.getMainWindow(),
-                    "Only admins can edit products",
-                    "Forbidden",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        manager.changeState(new EditState(manager));
+
     }
 
     @Override
     public void handleAuthButtonClick(ActionEvent event) {
-        Auth.logout();
-        this.manager.changeState(new GuestState(manager));
+        new UserLogin(() -> this.manager.changeState(new UserState(this.manager)));
     }
 
     @Override
@@ -42,16 +34,16 @@ public class UserState implements IListWindowState{
 
     @Override
     public String leftButtonText() {
-        return "Order";
+        return null;
     }
 
     @Override
     public String rightButtonText() {
-        return "Edit";
+        return null;
     }
 
     @Override
     public String authButtonText() {
-        return "Logout";
+        return "Login";
     }
 }

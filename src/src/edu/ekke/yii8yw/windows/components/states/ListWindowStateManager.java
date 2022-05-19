@@ -4,13 +4,14 @@ import edu.ekke.yii8yw.models.Product;
 import edu.ekke.yii8yw.windows.ListProductWindow;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.util.List;
 
-public class ListWindowStateManager implements IListWindowState{
+public class ListWindowStateManager {
     private final JButton leftButton;
     private final JButton rightButton;
     private final List<JTextField> inputs;
+    private final JButton authButton;
+    private final JButton addButton;
     private IListWindowState state;
     private Product selectedProduct;
     private final ListProductWindow listWindow;
@@ -19,10 +20,14 @@ public class ListWindowStateManager implements IListWindowState{
         this.listWindow = parent;
         this.leftButton = buttons.get(0);
         this.rightButton = buttons.get(1);
+        this.authButton = buttons.get(2);
+        this.addButton = buttons.get(3);
         this.inputs = inputs;
 
-        this.leftButton.addActionListener(this::handleLeftButtonClick);
-        this.rightButton.addActionListener(this::handleRightButtonClick);
+        this.leftButton.addActionListener((e) -> this.state.handleLeftButtonClick(e));
+        this.rightButton.addActionListener((e) -> this.state.handleRightButtonClick(e));
+        this.authButton.addActionListener((e) -> this.state.handleAuthButtonClick(e));
+
     }
 
 
@@ -38,38 +43,28 @@ public class ListWindowStateManager implements IListWindowState{
         this.selectedProduct = selectedProduct;
     }
 
-    @Override
-    public void handleLeftButtonClick(ActionEvent event) {
-        this.state.handleLeftButtonClick(event);
-    }
-
-    @Override
-    public void handleRightButtonClick(ActionEvent event) {
-        this.state.handleRightButtonClick(event);
-    }
-
-    @Override
-    public boolean canEdit() {
-        return this.state.canEdit();
-    }
-
-    @Override
-    public String leftButtonText() {
-        return this.state.leftButtonText();
-    }
-
-    @Override
-    public String rightButtonText() {
-        return this.state.rightButtonText();
-    }
-
     public void changeState(IListWindowState newState) {
         this.state = newState;
-        this.leftButton.setText(leftButtonText());
-        this.rightButton.setText(rightButtonText());
+        if(this.state.leftButtonText() != null) {
+            this.leftButton.setText(this.state.leftButtonText());
+            this.leftButton.setEnabled(true);
+        } else {
+            this.leftButton.setText("-");
+            this.leftButton.setEnabled(false);
+        }
 
+        if(this.state.rightButtonText() != null) {
+            this.rightButton.setText(this.state.rightButtonText());
+            this.rightButton.setEnabled(true);
+        } else {
+            this.rightButton.setText("-");
+            this.rightButton.setEnabled(false);
+        }
+        this.authButton.setText(this.state.authButtonText());
+
+        this.addButton.setEnabled(this.state.canEdit());
         for (var input : inputs) {
-            input.setEditable(canEdit());
+            input.setEditable(this.state.canEdit());
         }
     }
 }

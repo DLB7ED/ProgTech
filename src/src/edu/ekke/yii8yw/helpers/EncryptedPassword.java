@@ -1,5 +1,7 @@
 package edu.ekke.yii8yw.helpers;
 
+import edu.ekke.yii8yw.core.exceptions.ValidatorException;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
@@ -26,17 +28,17 @@ public class EncryptedPassword {
         return hash.toString();
     }
 
-    public static boolean verify(String raw, String hash) throws Exception {
+    public static boolean verify(String raw, String hash) throws ValidatorException {
         if (Objects.equals(raw, "") || Objects.equals(hash, ""))
         {
-            throw new Exception("raw or hash is empty");
+            throw new ValidatorException("raw or hash is empty");
         }
         return getHashedPassword(raw).equals(hash);
     }
 
-    public static String hash(String password) throws Exception {
+    public static String hash(String password) throws ValidatorException {
         if (!password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&._;,/\\\\#-])[A-Za-z\\d@$!%*?&._;,/\\\\#-]{8,}$")){
-            throw new Exception("Weak password");
+            throw new ValidatorException("Weak password");
         }
         return getHashedPassword(password);
     }

@@ -1,6 +1,7 @@
 package edu.ekke.yii8yw.models;
 
 import edu.ekke.yii8yw.core.database.DB;
+import org.apache.log4j.Logger;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -99,15 +100,18 @@ public class Product extends Model{
                 DB.getInstance().execute("insert into products " +
                         "(producer, series, display, processor, RAM, storage_type, storage, price) values " +
                         "(?, ?, ?, ?, ?, ?, ?, ?)", params);
+                Logger.getLogger(Product.class).info("Inserted product: %s %s".formatted(getProducer(), getSeries()));
                 return true;
             }
 
             params.add(this.getId());
             DB.getInstance().execute("update products set producer=?, series=?, display=?, " +
                     "processor=?, RAM=?, storage_type=?, storage=?, price=? where id=?", params);
+            Logger.getLogger(Product.class).info("Updated product with id: %d".formatted(getId()));
             return true;
         }
         catch (Exception e) {
+            Logger.getLogger(Product.class).error("Save failed");
             return false;
         }
     }
@@ -121,9 +125,11 @@ public class Product extends Model{
             HashMap<String, Object> value = DB.getInstance().findOne("select * from products where id=?", params);
             this.fromHash(value);
 
+            Logger.getLogger(Product.class).info("Loaded product with id: %d".formatted(this.getId()));
             return true;
         }
         catch (Exception e) {
+            Logger.getLogger(Product.class).error("Load failed");
             return false;
         }
     }
@@ -143,8 +149,10 @@ public class Product extends Model{
             this.setCreatedAt((Timestamp) map.get("created_at"));
         }
         catch (Exception e){
+            Logger.getLogger(Product.class).error("FromHash failed: %s".formatted(map.toString()));
             return false;
         }
+        Logger.getLogger(Product.class).info("Loaded from Hash");
         return true;
     }
 
@@ -163,6 +171,7 @@ public class Product extends Model{
         result.put("price", this.getPrice());
         result.put("created_at", this.getCreatedAt());
 
+        Logger.getLogger(Product.class).info("Converted to hash: %s %s".formatted(getProducer(), getSeries()));
         return result;
     }
 
