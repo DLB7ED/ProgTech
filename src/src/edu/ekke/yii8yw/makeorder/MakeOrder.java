@@ -74,6 +74,16 @@ public class MakeOrder implements MakeOrderSubject, SaveOrder {
         //todo
     }
 
+    @Override
+    public void removeProduct(Product product) {
+        products.remove(product);
+    }
+
+    @Override
+    public void addProduct(Product product) {
+        products.add(product);
+    }
+
     public static class Builder{
         public Builder(){}
         private Order order;

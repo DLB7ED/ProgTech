@@ -4,7 +4,6 @@ import edu.ekke.yii8yw.core.database.DB;
 import org.apache.log4j.Logger;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -13,6 +12,15 @@ public class Order extends Model{
     private String city;
     private String street;
     private int houseNumber;
+
+    public Order(){}
+    public Order(Builder builder){
+        this.city = builder.city;
+        this.houseNumber = builder.houseNumber;
+        this.phone = builder.phone;
+        this.street = builder.street;
+    }
+
 
     public String getCity() {
         return city;
@@ -126,5 +134,31 @@ public class Order extends Model{
 
         Logger.getLogger(Order.class).info("Converted to hash: %s %s".formatted(getCity(), getPhone()));
         return result;
+    }
+    public static class Builder{
+        private String city;
+        private String street;
+        private int houseNumber;
+        private String phone;
+
+        public Builder(String city){
+            this.city = city;
+        }
+        public Builder street(String street){
+            this.street = street;
+            return this;
+        }
+        public Builder houseNumber(int houseNumber){
+            this.houseNumber = houseNumber;
+            return this;
+        }
+        public Builder phone(String phone){
+            this.phone = phone;
+            return this;
+        }
+        public Order build(){
+            Order order = new Order(this);
+            return order;
+        }
     }
 }

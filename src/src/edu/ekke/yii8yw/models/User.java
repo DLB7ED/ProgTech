@@ -14,6 +14,14 @@ public class User extends Model{
     private String name;
     private String email;
     private String password;
+    public User(){}
+    public User(Builder builder){
+        this.name = builder.name;
+        this.email = builder.email;
+        this.password = builder.password;
+        this.isAdmin = builder.isAdmin;
+    }
+
 
     public String getName() {
         return name;
@@ -128,5 +136,31 @@ public class User extends Model{
 
         Logger.getLogger(User.class).info("Converted to hash: %s".formatted(this.getEmail()));
         return result;
+    }
+    public static class Builder{
+        private String name;
+        private String email;
+        private String password;
+        private boolean isAdmin;
+
+        public Builder(String name){
+            this.name = name;
+        }
+        public Builder email(String email){
+            this.email = email;
+            return this;
+        }
+        public Builder password(String password){
+            this.password = password;
+            return this;
+        }
+        public Builder isAdmin(boolean isAdmin){
+            this.isAdmin = isAdmin;
+            return this;
+        }
+        public User build(){
+            User user = new User(this);
+            return user;
+        }
     }
 }

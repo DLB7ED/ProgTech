@@ -1,6 +1,5 @@
 package edu.ekke.yii8yw.makeorder;
 
-import com.mysql.cj.log.Log;
 import edu.ekke.yii8yw.models.Order;
 import edu.ekke.yii8yw.models.Product;
 import edu.ekke.yii8yw.models.User;
