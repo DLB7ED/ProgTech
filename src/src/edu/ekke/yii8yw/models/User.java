@@ -1,6 +1,7 @@
 package edu.ekke.yii8yw.models;
 
 import edu.ekke.yii8yw.core.database.DB;
+import org.apache.log4j.Logger;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -57,14 +58,17 @@ public class User extends Model{
 
             if (this.getId() == 0){
                 DB.getInstance().execute("insert into users (name, email, password) values (?, ?, ?)", params);
+                Logger.getLogger(User.class).info("Inserted user with email: %s".formatted(getEmail()));
                 return true;
             }
 
             params.add(this.getId());
             DB.getInstance().execute("update users set name=?, email=?, password=? where id=?", params);
+            Logger.getLogger(User.class).info("Updated user with id: %d".formatted(getId()));
             return true;
         }
         catch (Exception e){
+            Logger.getLogger(User.class).error("Save failed");
             return false;
         }
     }
@@ -79,9 +83,11 @@ public class User extends Model{
 
             this.fromHash(value);
 
+            Logger.getLogger(User.class).info("Loaded user with id: %d".formatted(getId()));
             return true;
         }
         catch (Exception e){
+            Logger.getLogger(User.class).error("Load failed");
             return false;
         }
     }
@@ -97,9 +103,11 @@ public class User extends Model{
             this.setCreatedAt((Timestamp) map.get("created_at"));
 
         }catch (Exception e){
+            Logger.getLogger(User.class).error("FromHash failed: %s".formatted(map.toString()));
             return false;
         }
 
+        Logger.getLogger(User.class).info("Loaded from Hash");
         return true;
     }
 
@@ -114,6 +122,7 @@ public class User extends Model{
         result.put("is_admin", this.getIsAdmin() ? 1 : 0);
         result.put("created_at", this.getCreatedAt());
 
+        Logger.getLogger(User.class).info("Converted to hash: %s".formatted(this.getEmail()));
         return result;
     }
 }
