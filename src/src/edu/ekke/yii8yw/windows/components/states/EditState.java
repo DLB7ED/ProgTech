@@ -1,8 +1,10 @@
 package edu.ekke.yii8yw.windows.components.states;
 
+import edu.ekke.yii8yw.core.Auth;
 import edu.ekke.yii8yw.core.database.DB;
 import edu.ekke.yii8yw.helpers.Tools;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 
 public class AdminState implements IListWindowState{
@@ -30,6 +32,12 @@ public class AdminState implements IListWindowState{
     }
 
     @Override
+    public void handleAuthButtonClick(ActionEvent event) {
+        Auth.logout();
+        this.manager.changeState(new GuestState(manager));
+    }
+
+    @Override
     public boolean canEdit() {
         return true;
     }
@@ -42,5 +50,10 @@ public class AdminState implements IListWindowState{
     @Override
     public String rightButtonText() {
         return "Save";
+    }
+
+    @Override
+    public String authButtonText() {
+        return "Logout";
     }
 }
