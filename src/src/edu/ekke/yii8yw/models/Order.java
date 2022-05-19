@@ -1,6 +1,7 @@
 package edu.ekke.yii8yw.models;
 
 import edu.ekke.yii8yw.core.database.DB;
+import org.apache.log4j.Logger;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -60,14 +61,17 @@ public class Order extends Model{
             if (this.getId() == 0){
                 DB.getInstance().execute("insert into orders (city, street, house_number, phone) values " +
                         "(?, ?, ?, ?, ?) where id=?", params);
+                Logger.getLogger(Order.class).info("Inserted order: %s %s".formatted(getCity(), getPhone()));
                 return  true;
             }
 
             params.add(this.getId());
             DB.getInstance().execute("update orders set city=?, street=?, house_number=?, phone=?", params);
+            Logger.getLogger(Order.class).info("Updated order with id: %d".formatted(getId()));
             return true;
         }
         catch (Exception e){
+            Logger.getLogger(Order.class).error("Save failed");
             return false;
         }
     }
@@ -81,9 +85,11 @@ public class Order extends Model{
             HashMap<String, Object> value = DB.getInstance().findOne("select * from orders where id=?", params);
             this.fromHash(value);
 
+            Logger.getLogger(Order.class).info("Loaded order with id: %d".formatted(getId()));
             return true;
         }
         catch (Exception e){
+            Logger.getLogger(Order.class).error("Load failed");
             return false;
         }
     }
@@ -99,8 +105,11 @@ public class Order extends Model{
             this.setCreatedAt((Timestamp) map.get("created_at"));
         }
         catch (Exception e){
+            Logger.getLogger(Order.class).error("FromHash failed: %s".formatted(map.toString()));
             return false;
         }
+
+        Logger.getLogger(Order.class).info("Loaded from Hash");
         return true;
     }
 
@@ -115,6 +124,7 @@ public class Order extends Model{
         result.put("phone", this.getPhone());
         result.put("created_at", this.getCreatedAt());
 
+        Logger.getLogger(Order.class).info("Converted to hash: %s %s".formatted(getCity(), getPhone()));
         return result;
     }
 }
