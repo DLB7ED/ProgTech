@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Product extends Model{
+public class Product extends Model {
 
     private String producer;
     private String series;
@@ -19,6 +19,18 @@ public class Product extends Model{
     private int storage;
     private int price;
 
+    public Product(){}
+
+    public Product(Builder builder) {
+        this.producer = builder.producer;
+        this.series = builder.series;
+        this.display = builder.display;
+        this.processor = builder.processor;
+        this.ram = builder.ram;
+        this.storageType = builder.storageType;
+        this.storage = builder.storage;
+        this.price = builder.price;
+    }
     public String getProducer() {
         return producer;
     }
@@ -96,7 +108,7 @@ public class Product extends Model{
             params.add(this.getStorage());
             params.add(this.getPrice());
 
-            if (this.getId() == 0){
+            if (this.getId() == 0) {
                 DB.getInstance().execute("insert into products " +
                         "(producer, series, display, processor, RAM, storage_type, storage, price) values " +
                         "(?, ?, ?, ?, ?, ?, ?, ?)", params);
@@ -109,8 +121,7 @@ public class Product extends Model{
                     "processor=?, RAM=?, storage_type=?, storage=?, price=? where id=?", params);
             Logger.getLogger(Product.class).info("Updated product with id: %d".formatted(getId()));
             return true;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Logger.getLogger(Product.class).error("Save failed");
             return false;
         }
@@ -127,8 +138,7 @@ public class Product extends Model{
 
             Logger.getLogger(Product.class).info("Loaded product with id: %d".formatted(this.getId()));
             return true;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             Logger.getLogger(Product.class).error("Load failed");
             return false;
         }
@@ -147,8 +157,7 @@ public class Product extends Model{
             this.setStorage((int) map.get("storage"));
             this.setPrice((int) map.get("price"));
             this.setCreatedAt((Timestamp) map.get("created_at"));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             Logger.getLogger(Product.class).error("FromHash failed: %s".formatted(map.toString()));
             return false;
         }
@@ -178,5 +187,54 @@ public class Product extends Model{
     @Override
     public String toString() {
         return "%s %s (%d Ft)".formatted(this.producer, this.series, this.price);
+    }
+
+    public static class Builder {
+        private String producer;
+        private String series;
+        private double display;
+        private String processor;
+        private int ram;
+        private String storageType;
+        private int storage;
+        private int price;
+
+        public Builder(String producer) {
+            this.producer = producer;
+        }
+
+        public Builder series(String series) {
+            this.series = series;
+            return this;
+        }
+        public Builder display(double display){
+            this.display = display;
+            return this;
+        }
+        public Builder processor(String processor){
+            this.processor = processor;
+            return this;
+        }
+        public Builder ram(int ram){
+            this.ram = ram;
+            return this;
+        }
+        public Builder storageType(String storageType){
+            this.storageType = storageType;
+            return this;
+        }
+        public Builder storage(int storage){
+            this.storage = storage;
+            return this;
+        }
+        public Builder price(int price){
+            this.price = price;
+            return this;
+        }
+
+        public Product build(){
+            Product product = new Product(this);
+            return product;
+        }
     }
 }
