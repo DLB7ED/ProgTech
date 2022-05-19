@@ -8,6 +8,7 @@ import edu.ekke.yii8yw.models.Product;
 import edu.ekke.yii8yw.windows.components.states.AddNewState;
 import edu.ekke.yii8yw.windows.components.states.ListWindowStateManager;
 import edu.ekke.yii8yw.windows.components.states.UserState;
+import org.apache.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -77,7 +78,11 @@ public class ListProductWindow extends JFrame{
 
     private void listen(JTextField textField, IListenToLambda lambda) {
         textField.getDocument().addDocumentListener((SimpleDocumentListener) e -> {
-            if(this.stateManager.getSelectedProduct() == null || Objects.equals(textField.getText(), "")) return;
+            if(this.stateManager.getSelectedProduct() == null || Objects.equals(textField.getText(), "")) {
+
+                Logger.getLogger(ListProductWindow.class).warn("Selected product or text field is null");
+                return;
+            }
             lambda.op(this.stateManager.getSelectedProduct(), textField.getText());
         });
     }
@@ -97,6 +102,7 @@ public class ListProductWindow extends JFrame{
         Product selected = (Product) list1.getSelectedValue();
         this.stateManager.setSelectedProduct(selected);
         if (selected == null){
+            Logger.getLogger(ListProductWindow.class).warn("Selected is null");
             return;
         }
         txt_producer.setText(selected.getProducer());
