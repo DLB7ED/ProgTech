@@ -4,10 +4,9 @@ import edu.ekke.yii8yw.models.Product;
 import edu.ekke.yii8yw.windows.ListProductWindow;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.util.List;
 
-public class ListWindowStateManager implements IListWindowState{
+public class ListWindowStateManager {
     private final JButton leftButton;
     private final JButton rightButton;
     private final List<JTextField> inputs;
@@ -25,9 +24,9 @@ public class ListWindowStateManager implements IListWindowState{
         this.addButton = buttons.get(3);
         this.inputs = inputs;
 
-        this.leftButton.addActionListener(this::handleLeftButtonClick);
-        this.rightButton.addActionListener(this::handleRightButtonClick);
-        this.authButton.addActionListener(this::handleAuthButtonClick);
+        this.leftButton.addActionListener((e) -> this.state.handleLeftButtonClick(e));
+        this.rightButton.addActionListener((e) -> this.state.handleRightButtonClick(e));
+        this.authButton.addActionListener((e) -> this.state.handleAuthButtonClick(e));
 
     }
 
@@ -44,63 +43,28 @@ public class ListWindowStateManager implements IListWindowState{
         this.selectedProduct = selectedProduct;
     }
 
-    @Override
-    public void handleLeftButtonClick(ActionEvent event) {
-        this.state.handleLeftButtonClick(event);
-    }
-
-    @Override
-    public void handleRightButtonClick(ActionEvent event) {
-        this.state.handleRightButtonClick(event);
-    }
-
-    @Override
-    public void handleAuthButtonClick(ActionEvent event) {
-        this.state.handleAuthButtonClick(event);
-    }
-
-    @Override
-    public boolean canEdit() {
-        return this.state.canEdit();
-    }
-
-    @Override
-    public String leftButtonText() {
-        return this.state.leftButtonText();
-    }
-
-    @Override
-    public String rightButtonText() {
-        return this.state.rightButtonText();
-    }
-
-    @Override
-    public String authButtonText() {
-        return this.state.authButtonText();
-    }
-
     public void changeState(IListWindowState newState) {
         this.state = newState;
-        if(leftButtonText() != null) {
-            this.leftButton.setText(leftButtonText());
+        if(this.state.leftButtonText() != null) {
+            this.leftButton.setText(this.state.leftButtonText());
             this.leftButton.setEnabled(true);
         } else {
             this.leftButton.setText("-");
             this.leftButton.setEnabled(false);
         }
 
-        if(rightButtonText() != null) {
-            this.rightButton.setText(rightButtonText());
+        if(this.state.rightButtonText() != null) {
+            this.rightButton.setText(this.state.rightButtonText());
             this.rightButton.setEnabled(true);
         } else {
             this.rightButton.setText("-");
             this.rightButton.setEnabled(false);
         }
-        this.authButton.setText(this.authButtonText());
+        this.authButton.setText(this.state.authButtonText());
 
-        this.addButton.setEnabled(canEdit());
+        this.addButton.setEnabled(this.state.canEdit());
         for (var input : inputs) {
-            input.setEditable(canEdit());
+            input.setEditable(this.state.canEdit());
         }
     }
 }
