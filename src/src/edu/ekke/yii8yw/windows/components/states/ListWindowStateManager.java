@@ -11,6 +11,8 @@ public class ListWindowStateManager implements IListWindowState{
     private final JButton leftButton;
     private final JButton rightButton;
     private final List<JTextField> inputs;
+    private final JButton authButton;
+    private final JButton addButton;
     private IListWindowState state;
     private Product selectedProduct;
     private final ListProductWindow listWindow;
@@ -19,10 +21,14 @@ public class ListWindowStateManager implements IListWindowState{
         this.listWindow = parent;
         this.leftButton = buttons.get(0);
         this.rightButton = buttons.get(1);
+        this.authButton = buttons.get(2);
+        this.addButton = buttons.get(3);
         this.inputs = inputs;
 
         this.leftButton.addActionListener(this::handleLeftButtonClick);
         this.rightButton.addActionListener(this::handleRightButtonClick);
+        this.authButton.addActionListener(this::handleAuthButtonClick);
+
     }
 
 
@@ -49,6 +55,11 @@ public class ListWindowStateManager implements IListWindowState{
     }
 
     @Override
+    public void handleAuthButtonClick(ActionEvent event) {
+        this.state.handleAuthButtonClick(event);
+    }
+
+    @Override
     public boolean canEdit() {
         return this.state.canEdit();
     }
@@ -63,11 +74,31 @@ public class ListWindowStateManager implements IListWindowState{
         return this.state.rightButtonText();
     }
 
+    @Override
+    public String authButtonText() {
+        return this.state.authButtonText();
+    }
+
     public void changeState(IListWindowState newState) {
         this.state = newState;
-        this.leftButton.setText(leftButtonText());
-        this.rightButton.setText(rightButtonText());
+        if(leftButtonText() != null) {
+            this.leftButton.setText(leftButtonText());
+            this.leftButton.setEnabled(true);
+        } else {
+            this.leftButton.setText("-");
+            this.leftButton.setEnabled(false);
+        }
 
+        if(rightButtonText() != null) {
+            this.rightButton.setText(rightButtonText());
+            this.rightButton.setEnabled(true);
+        } else {
+            this.rightButton.setText("-");
+            this.rightButton.setEnabled(false);
+        }
+        this.authButton.setText(this.authButtonText());
+
+        this.addButton.setEnabled(canEdit());
         for (var input : inputs) {
             input.setEditable(canEdit());
         }

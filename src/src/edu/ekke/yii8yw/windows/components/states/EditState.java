@@ -4,13 +4,12 @@ import edu.ekke.yii8yw.core.Auth;
 import edu.ekke.yii8yw.core.database.DB;
 import edu.ekke.yii8yw.helpers.Tools;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-public class AdminState implements IListWindowState{
+public class EditState implements IListWindowState{
     private final ListWindowStateManager manager;
 
-    public AdminState(ListWindowStateManager parent) {
+    public EditState(ListWindowStateManager parent) {
         this.manager = parent;
     }
 
